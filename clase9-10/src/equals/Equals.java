@@ -55,12 +55,16 @@ public class Equals {
 		//List -> ArrayList
 		List<Alumno> alumnos = new ArrayList<>();
 		alumnos.add(a1);
-		System.out.println(alumnos.contains(a4));
+		System.out.println(alumnos.contains(a2));
 		
 		//Set -> HashSet
 		Set <Alumno> alumnosSet = new HashSet<>();
 		alumnoSet.add(a1);
 		System.class.out.println(alumnosSet.contains(a2));
+		System.out.println(alumnosSet.contains(a2));
+		System.out.println(a2.hashCode());
+		
+		//mira repositorio para completo
 	}
 	
 }

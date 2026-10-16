@@ -21,7 +21,7 @@ public class Alumno implements Comparable<Alumno>{
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) { //porque Objeto y no Alumno¿?
 		if(this == obj) {//misma referencia
 			return true;
 		}
@@ -35,6 +35,11 @@ public class Alumno implements Comparable<Alumno>{
 		// return this.nombre == o.nombre && this.nota == o.nota; tampoco porque los strings son un tipo de referencia
 		return this.nombre.equals(o.nombre) && this.nota == o.nota;
 	}
+	
+	/**@Override
+	*public int hashCode() {
+	*	return 
+	}*/ //mirad repositorio
 	
 	public static Alumno[] ordenar(Alumno[] arr, Comparator<Alumno> comparador) { //se añadio el argumento en intento 2
 		for (int pasada = 0; pasada < arr.length; pasada++) {
