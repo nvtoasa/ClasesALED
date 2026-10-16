@@ -19,6 +19,23 @@ public class Alumno implements Comparable<Alumno>{
 	public String toString(){
 		return this.nombre;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj) {//misma referencia
+			return true;
+		}
+		
+		if(!(obj instanceof Alumno)) { //no es tipo alumno
+			return false;
+		}
+		
+		//return this.nombre = obj.nombre && this.nota == obj.nota; java no entiendo que obj es un alumno si o si por los parámetros del metodo
+		Alumno o =(Alumno) obj;
+		// return this.nombre == o.nombre && this.nota == o.nota; tampoco porque los strings son un tipo de referencia
+		return this.nombre.equals(o.nombre) && this.nota == o.nota;
+	}
+	
 	public static Alumno[] ordenar(Alumno[] arr, Comparator<Alumno> comparador) { //se añadio el argumento en intento 2
 		for (int pasada = 0; pasada < arr.length; pasada++) {
 			boolean changed = false;
