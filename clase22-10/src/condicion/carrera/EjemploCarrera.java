@@ -33,7 +33,9 @@ public class EjemploCarrera {
 		* ha terminaod en una sola actualuzacuón del valor.
 		* 
 		* valor++ no es atómica. no es una sola operacion, son como tres operaciones. entonces se pueden intercalar. esto se le llama
-		* condición de carrera.
+		* condición de carrera
+		* 
+		* Aplico cerrojo en contador
 		*/
 		
 		
