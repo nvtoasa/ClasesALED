@@ -5,13 +5,13 @@ public class Contador {
 	private int valor = 0; //contador comienza en cero, private para proteger lo que guardamos dentor del contador
 	// para que nadie pueda alterar su valor. ahora ¿como lo incremento? 
 	
-	public void incrementar(Object cerrojo) { 
+	public void incrementar() { 
 		//pero si no quiero que todo tenga cerrojo, si por ejemplo tengo al ppio un calculo costoso que no quiero 
 		//con cerrojo
 		
 		//Cálculo costoso
 		
-		synchronized(cerrojo) { 
+		synchronized(this) { 
 			valor++; 
 		}
 		
@@ -27,4 +27,4 @@ public class Contador {
 
 //creo hebras que intentan acceder a su valor -> incrementador
 
-//EN ESTA VERSIÓN NO FUNCIONA, se crean dos cerrojos?
+
