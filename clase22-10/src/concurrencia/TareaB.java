@@ -1,6 +1,6 @@
 package concurrencia;
 
-public class TareaB extends Thread{
+public class TareaB implements Runnable{
 	@Override
 	public void run() {
 		for (int i = 0; i < 10; i++) {

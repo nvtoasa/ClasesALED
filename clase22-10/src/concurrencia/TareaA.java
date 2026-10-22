@@ -1,6 +1,6 @@
 package concurrencia;
 
-public class TareaA extends Thread{
+public class TareaA implements Runnable{ //ahora mi hebra puede heredar de otra clase
 	@Override
 	public void run() {
 		for (int i = 0; i < 10; i++) {

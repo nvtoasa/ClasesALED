@@ -5,8 +5,11 @@ package concurrencia;
 public class Concurrente {
 
 	public static void main(String[] args) throws InterruptedException{
-		Thread a = new TareaA();
-		Thread b = new TareaB();
+		Runnable tareaA = new TareaA();
+		Runnable tareaB = new TareaB();
+		
+		Thread a = new Thread(tareaA);
+		Thread b = new Thread(tareaB);
 		
 		a.start();
 		b.start();
