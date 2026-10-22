@@ -12,12 +12,12 @@ public class Buffer {
 			this.dato = dato;
 			this.lleno = true;
 			System.out.println("Guardado valor: " + dato);
-			return true;
+			return true; //ha conseguido guardar
 		}
-		return false;
+		return false; //no consigue guardar
 	}
 	
-	public int sacar() { // tengo que ecomprobar si hay algo guardado
+	public synchronized int sacar() { // tengo que comprobar si hay algo guardado
 		if(lleno) {
 			this.lleno = false;
 			System.out.println("Sacado valor: " + dato);

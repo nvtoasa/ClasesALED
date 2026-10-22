@@ -11,8 +11,11 @@ public class SensorProductor extends Thread {
 	@Override
 	public void run() {
 		for (int i = 0; i < 10; i++) {
-			b.guardar(i);
+			boolean guardado = b.guardar(i);
+			
+			//si no se ha guardado, se intenta guardar 
+			//while() 
+			} //mira el github del profe, me falta esta parte
 		}
 	}
 
-}
