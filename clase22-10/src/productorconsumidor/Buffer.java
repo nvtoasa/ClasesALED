@@ -54,3 +54,8 @@ public class Buffer {
 //porque C lo ha actualizaod entonces puede entrar. al entrar pone dato = 1 y lleno = true. Pero ahora mi hebra consumidora tiene
 //que hacer el print del dato -> imprime Valor sacado: 1. Parece que intenta sacar el valor 1, pero tendría que haber imprimido 1
 //es como si hubiera desaparecido el 0 -> condición de carrera!
+
+//no funciona porque al guardar dato = 0, lleno = true, imprime guardado valor : 0. termina, libera el cerrojo (porque ha terminado guardar)
+//C y P vuelven a intentar conseguir el cerrojo. lleno = true, dato = 0. si P vuelve a conseguir el cerrojo -> ahora lleno= true
+//entra en el while y se va a dormir, pasan los 500 ms, vuelve a comprobar lleno, sigue estando lleno, no se cambia lleno, esto es por el
+//synchronised, mi hebra C no puede entrar en sacar, y es lo único que puede liberarme -> mis hebras no pueden avanzar.
