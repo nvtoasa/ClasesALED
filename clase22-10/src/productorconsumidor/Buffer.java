@@ -8,24 +8,38 @@ public class Buffer {
 	private boolean lleno = false; //al ppio mi buffer está vacío
 	
 	//Hebra productora -> P
-	public synchronized boolean guardar(int dato) { //sin el if, se sobreescribe. synchronized para que dejar que cada hebra termine de guardar/sacar, una hebra no entra al método mientras haya otra dentra
-		if(!lleno) {
+	public synchronized void guardar(int dato) { //sin el if, se sobreescribe. synchronized para que dejar que cada hebra termine de guardar/sacar, una hebra no entra al método mientras haya otra dentra
+		
+		while(lleno) {
+			//Dormir/parar. cuando sale de este if, es que le toca guardar
+			try{
+				Thread.sleep(500); 
+			} catch (InterruptedException e) {
+				return;
+			}
+		} //cuando sale guarda lo que tiene que guardar
+		
 			this.dato = dato;
 			this.lleno = true;
 			System.out.println("Guardado valor: " + dato);
-			return true; //ha conseguido guardar
-		}
-		return false; //no consigue guardar
+
 	}
 	//Hebra consumidora -> C
 	
-	public synchronized int sacar() { // tengo que comprobar si hay algo guardado
-		if(lleno) {
+	public synchronized int sacar() { // ahora quiero que saque solo si puede sacar -> si no está lleno toca dormir
+		while(!lleno) {
+			//Dormir/ parar
+			try {
+				Thread.sleep(500);
+			} catch(InterruptedException e) {
+					return -1;
+				}
+			} //duerme hasta que pueda sacarlo
+		
 			this.lleno = false;
 			System.out.println("Sacado valor: " + dato);
 			return dato;
-		}
-		return -1; //devuelvo el valor 'no válido', pero no me interesan que aparezcan y se impriman -> tengo que volver a pedir
+			
 	}
 
 }

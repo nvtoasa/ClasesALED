@@ -11,12 +11,7 @@ public class SensorConsumidor extends Thread{
 	@Override
 	public void run() {
 		for (int i = 0; i < 10; i++) {
-			int valor = b.sacar();
-			
-			while (valor == -1) { //lo que dijimos en buffer de que hay que volver a pedir en vez de imprimir
-				valor = b.sacar();
-			}
-			
+			b.sacar();
 		}
 	}
 
