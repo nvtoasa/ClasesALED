@@ -13,7 +13,13 @@ public class Buffer {
 		while(lleno) {
 			//Dormir/parar. cuando sale de este if, es que le toca guardar
 			try{
-				Thread.sleep(500); 
+				wait(); //mando a mi hebra a parar, no es dormir. la paro hasta que yo le pide despertarla. el wait libera al cerrojo, eso significa que como P está parada, 
+				//ahora C es la ÚNICA que puede coger el cerrojo, y entra a sacar. aquí pone lleno= flase, imprime y notify() ->
+				//como solo hay otra hebra, java elige, pero no tiene mucho donde elegir, levanta a P. esto no significa que coge el cerrojo autmáticamente
+				//no se lo asegura, sino que lucha por él. hasta que C no salga de sacar, no hay cerrojo. cuando termina sale de sacar
+				//libera el cerrojo, y luchan por el cerrojo. Podemos tener otra vez que C lo consigue: lleno = false, entra al while y para. libera el cerrojo
+				//por lo que P toma el cerrojo, comprueba lleno, sale de while, guarda dato, lleno = true notify -> 'despierta' a C y vuelven a luchar
+				//por el cerrojo.
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -22,6 +28,7 @@ public class Buffer {
 			this.dato = dato;
 			this.lleno = true;
 			System.out.println("Guardado valor: " + dato);
+			notify(); //despierta a una hebra, pero no se cual (en este caso a la otra, porque solo hay 2, pero si hay más es otra cosa)
 
 	}
 	//Hebra consumidora -> C
@@ -30,7 +37,7 @@ public class Buffer {
 		while(!lleno) {
 			//Dormir/ parar
 			try {
-				Thread.sleep(500);
+				wait(); //wait libera al cerrojo. 
 			} catch(InterruptedException e) {
 					return -1;
 				}
@@ -38,6 +45,7 @@ public class Buffer {
 		
 			this.lleno = false;
 			System.out.println("Sacado valor: " + dato);
+			notify(); //despertar a wait(). lo pongo en el otro método porque en P no está avanzando, está parado, solo C puede despertarla
 			return dato;
 			
 	}
@@ -58,4 +66,4 @@ public class Buffer {
 //no funciona porque al guardar dato = 0, lleno = true, imprime guardado valor : 0. termina, libera el cerrojo (porque ha terminado guardar)
 //C y P vuelven a intentar conseguir el cerrojo. lleno = true, dato = 0. si P vuelve a conseguir el cerrojo -> ahora lleno= true
 //entra en el while y se va a dormir, pasan los 500 ms, vuelve a comprobar lleno, sigue estando lleno, no se cambia lleno, esto es por el
-//synchronised, mi hebra C no puede entrar en sacar, y es lo único que puede liberarme -> mis hebras no pueden avanzar.
+//synchronised, mi hebra C no puede entrar en sacar, y es lo único que puede liberarme -> mis hebras no pueden avanzar. INTERBLOQUEO
