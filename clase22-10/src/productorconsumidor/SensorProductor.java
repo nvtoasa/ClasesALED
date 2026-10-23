@@ -14,8 +14,10 @@ public class SensorProductor extends Thread {
 			boolean guardado = b.guardar(i);
 			
 			//si no se ha guardado, se intenta guardar 
-			//while() 
-			} //mira el github del profe, me falta esta parte
+			while(!guardado){
+				guardado = b.guardar(i);
+			}
 		}
 	}
+}
 
