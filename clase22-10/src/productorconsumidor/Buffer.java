@@ -28,7 +28,7 @@ public class Buffer {
 			this.dato = dato;
 			this.lleno = true;
 			System.out.println("Guardado valor: " + dato);
-			notify(); //despierta a una hebra, pero no se cual (en este caso a la otra, porque solo hay 2, pero si hay más es otra cosa)
+			notifyAll(); //despertar a wait(). 
 
 	}
 	//Hebra consumidora -> C
@@ -45,7 +45,7 @@ public class Buffer {
 		
 			this.lleno = false;
 			System.out.println("Sacado valor: " + dato);
-			notify(); //despertar a wait(). lo pongo en el otro método porque en P no está avanzando, está parado, solo C puede despertarla
+			notifyAll(); //despertar a wait(). 
 			return dato;
 			
 	}
@@ -67,3 +67,11 @@ public class Buffer {
 //C y P vuelven a intentar conseguir el cerrojo. lleno = true, dato = 0. si P vuelve a conseguir el cerrojo -> ahora lleno= true
 //entra en el while y se va a dormir, pasan los 500 ms, vuelve a comprobar lleno, sigue estando lleno, no se cambia lleno, esto es por el
 //synchronised, mi hebra C no puede entrar en sacar, y es lo único que puede liberarme -> mis hebras no pueden avanzar. INTERBLOQUEO
+
+//imagina 2 C y 2 P. dato = 1, lleno = false. no es situación inicial, ya hemos ido ejecutando cosas. muy posiblemente habrá 3 hebras en wait y 
+//una con el cerrojo que está trabajando. se encuentra lleno = false -> actualiza el dato y lo pone a 2, ahora lleno = true. ahora
+//hace print y notify. este notify levante a UNA hebra.¿levanta a hebra P? esta estaba en wait() esperando, sale del wait, pero lleno = true
+//vuelve a wait() y vuelve a perder el cerrojo.la hebra que habia ejecutado notify vuelve, porque es la única que no está en wait() que puede coger 
+//el cerrojo, se pone en wait al entrar al while todas las hebras se quedan en wait. Si entrara en C pone lleno = false, imprime y notify, puede volver a ser P...
+
+//usamos notifyAll(), cuando se ejecuta todos salen del wait(). 
