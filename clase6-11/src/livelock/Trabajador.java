@@ -4,16 +4,20 @@ public class Trabajador extends Thread {
 
     private final Herramienta primera;
     private final Herramienta segunda;
+    private Object cerrojo;
 
     public Trabajador(String nombre, Herramienta primera,
-                      Herramienta segunda) {
+                      Herramienta segunda, Object Cerrojo) {
         super(nombre);
         this.primera = primera;
         this.segunda = segunda;
+        this.cerrojo = Cerrojo;
     }
 
     @Override
     public void run() {
+    	synchronized(cerrojo) { //se resuleve el problema, pero no están haciendo a la vez, si no que un trabajador espera al otro. Esta es una manera de solucionarlo.
+    		//ahora lo consiguen ambos trabajdores en el primer intento.
         	try {
                 for (int intento = 1; intento <= 10; intento++) {
                 	System.out.println(getName() + ": intento " + intento);
@@ -44,19 +48,23 @@ public class Trabajador extends Thread {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+    	}
     }
 
     public static void main(String[] args) {
         Herramienta martillo = new Herramienta();
         Herramienta destornillador = new Herramienta();
+        Object cerrojo = new Object();
 
-        Trabajador h1 = new Trabajador("H1", martillo, destornillador);
-        Trabajador h2 = new Trabajador("H2", destornillador, martillo);
+        Trabajador h1 = new Trabajador("H1", martillo, destornillador, cerrojo);
+        Trabajador h2 = new Trabajador("H2", destornillador, martillo, cerrojo);
 
         h1.start();
         h2.start();
     }
 }
+
+//comprueba si te falta código
 
 //livelock: es como cuando estas caminando y te encuentras a alguien de frente, y entonces tu va para la derecha y el tambien
 //y entonces te vas para la izquierda y el tambien, y asi os estais bloquando mutuamente
