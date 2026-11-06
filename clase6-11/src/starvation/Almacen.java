@@ -9,22 +9,24 @@ public class Almacen {
         rojas++;
         System.out.println("Producida pieza roja. Almacén actual: R="+rojas+" A="+azules);
         // TODO: Tras producir piezas rojas podrían salir más pedidos.
-        notifyAll(); //se sale del wait()
+        notifyAll(); //se sale del wait(), avisa cuando hay piezas disponibles
     }
 
     public void producirAzul() {
         azules++;
         System.out.println("Producida pieza azul. Almacén actual: R="+rojas+" A="+azules);
         // TODO: Tras producir piezas azules podrían salir más pedidos.
+        notifyAll();
     }
 
     public synchronized void prepararPedido(int necesariasRojas,
-                                           int necesariasAzules)
+                                           int necesariasAzules) //cerrojo. se lucha por él. 
             throws InterruptedException {
     	
         // TODO: esperar hasta tener AMBOS tipos de piezas.
     	while(rojas < necesariasRojas || azules < necesariasAzules) {
-    		wait();
+    		wait(); //si se cumple la condición -> wait(), si al final hay piezas suficientes, se tiene que producir un notify y ya no se vuelve a entrar al while
+    		//mientras no haya peizas suficientes, aunque se salga del wait, no avanza al volver a llegar a while
     	}
         // TODO: retirar las dos cantidades bajo el mismo monitor. Se ejecuta cuando se sale del while.
     	rojas -= necesariasRojas;
