@@ -6,7 +6,7 @@ public class Main {
 		Banco banco = new Banco();
 		Cuenta cuentaA = new Cuenta(1, 100);
 		Cuenta empresa = new Cuenta(2,500);
-		Cuenta cuentaB = new Cuenta()
+		Cuenta cuentaB = new Cuenta(3, 150);
 	}
 
 }
