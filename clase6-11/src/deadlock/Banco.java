@@ -2,16 +2,19 @@ package deadlock;
 
 public class Banco {
 
-	public void transferir(Cuenta origen, Cuenta destino, int cantidad) { //synchronized es como un this...
-		//uso una misma instancia de bancco para las hebras, y asi cuando las hebras intenten hacer la transferencia en banco.trnasferir, ambas hebras
-		//intentan conseguir el MISMO cerrojo, no dos diferentes.
-		//si solo tengo una instancia de banco y el cerrojo solo se hace sobre es this, todas mis operaciones de banco se paran
-		//entonces si a la vez en mi banco llega una peticion de cuentaC a otro banco, no esta liberado, no se puede tranferir hasta que el
-		//otro termine. el synchronized me genera otro probema...
-		synchronized(origen) { //cambiamos el cerrojo
+	public void transferir(Cuenta origen, Cuenta destino, int cantidad) {
+		synchronized(origen) {
+			synchronized(destino){
 			//Cuenta A y cuenta B usan distintas referecnias -> distinto cerrojo -> condicion carrera.
 			//Se soluciona el problema de que CuentaC -> F que no tiene que esperar. Pero vuelve a aparecer el problema de antes.
 			//más explicado en cuaderno.
+				
+			//si meto un synchronized dentro de otro.. puede surgir un problema tipico. si a la vez que se hace H1 la empresa esta devlvindo a
+			// la cuenta A (H4). Puede ocurrir que H1 cosigue el cerrojo de origen (cuentaA), H4 consigue el cerrojo de origen
+		    // tambien (en H4 empresa es origen y H1 destino). ahora cada uno intenta coger el de destino. H1 intenta destino.
+			// el destino es empresa, pero ya esta cogido, lo tiene H1. no puede, entonces espera a que se libere. H4 más de lo mismo, intenta
+			//coger destino, que es CuentaA, y no puede. Las dos se quedan esperando, indefinidamente. no hay situacion que lo
+			// resuelva. esto se conoce como deadlock. Las dos esperan un recurso que no llega.
 		}
 		if (origen.saldo >= cantidad) {
 			origen.saldo -= cantidad;
@@ -19,6 +22,7 @@ public class Banco {
 		}
 		else {
 			System.out.println("Saldo insuficiente en la cuenta. Operación cancelada");
+		}
 		}
 	}
 }
