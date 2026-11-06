@@ -29,7 +29,7 @@ public class MainLego {
         productor.start();
 
         // Observar durante 5 segundos
-        Thread.sleep(5000);
+        Thread.sleep(5000); //para que le de tiempo a completar el pedido 1, el grande
 
         System.out.println("¿P1 sigue esperando? " + p1.isAlive());
 

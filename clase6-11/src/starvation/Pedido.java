@@ -24,7 +24,7 @@ public class Pedido extends Thread {
                         + rojas + " rojas y " + azules + " azules");
             	almacen.prepararPedido(rojas, azules);
                 System.out.println(getName() + " preparado");
-            } while (repetir);
+            } while (repetir); //para que el pedido se haga solo UNA vez, se podria cambiar si se quiere que se vuelva a hacer el pedido
 
         } catch (InterruptedException e) {
             // Terminar
