@@ -9,7 +9,7 @@ public class Almacen {
         rojas++;
         System.out.println("Producida pieza roja. Almacén actual: R="+rojas+" A="+azules);
         // TODO: Tras producir piezas rojas podrían salir más pedidos.
-        notifyAll(); //se sale del wait(), avisa cuando hay piezas disponibles
+        notifyAll(); //se sale del wait(), en el while se comprobará si ya hay piezas suficientes.
     }
 
     public void producirAzul() {
@@ -33,3 +33,7 @@ public class Almacen {
     	azules -= necesariasAzules;
     }
 }
+
+//la  hebra del pedido grande tiene posibilidades de conseguir el cerrojo, lucha por él, pero el problema viene del diseño del algoritmo
+//en la pracica nunca consigue las suficientes peizas rojas y azules, es un prbemas de fairness, no es porque a nivel de hebra
+//no consiga el cerrojo -> starvation
