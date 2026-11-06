@@ -18,7 +18,7 @@ public class Banco {
 		}
 		
 		synchronized(primera) {
-			synchronized(segundo){ //soluciona el problema de que H1 y H2 se esperen entre sí, porque si tienen el mismo destino (misma referencia)				
+			synchronized(segunda){ //soluciona el problema de que H1 y H2 se esperen entre sí, porque si tienen el mismo destino (misma referencia)				
 		}
 		//ahora en segundo (synchronized(segundo)) no hay nadie luchando por el cerrojo, solo uno, (segun el orden que hemos establecido), asi que
 		//se soluciona el deadlock.
