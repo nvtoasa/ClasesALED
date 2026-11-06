@@ -9,6 +9,7 @@ public class Almacen {
         rojas++;
         System.out.println("Producida pieza roja. Almacén actual: R="+rojas+" A="+azules);
         // TODO: Tras producir piezas rojas podrían salir más pedidos.
+        notifyAll(); //se sale del wait()
     }
 
     public void producirAzul() {
@@ -22,6 +23,11 @@ public class Almacen {
             throws InterruptedException {
     	
         // TODO: esperar hasta tener AMBOS tipos de piezas.
-        // TODO: retirar las dos cantidades bajo el mismo monitor.
+    	while(rojas < necesariasRojas || azules < necesariasAzules) {
+    		wait();
+    	}
+        // TODO: retirar las dos cantidades bajo el mismo monitor. Se ejecuta cuando se sale del while.
+    	rojas -= necesariasRojas;
+    	azules -= necesariasAzules;
     }
 }
