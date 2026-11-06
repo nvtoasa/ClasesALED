@@ -3,19 +3,31 @@ package deadlock;
 public class Banco {
 
 	public void transferir(Cuenta origen, Cuenta destino, int cantidad) {
-		synchronized(origen) {
-			synchronized(destino){
-			//Cuenta A y cuenta B usan distintas referecnias -> distinto cerrojo -> condicion carrera.
-			//Se soluciona el problema de que CuentaC -> F que no tiene que esperar. Pero vuelve a aparecer el problema de antes.
-			//más explicado en cuaderno.
-				
-			//si meto un synchronized dentro de otro.. puede surgir un problema tipico. si a la vez que se hace H1 la empresa esta devlvindo a
-			// la cuenta A (H4). Puede ocurrir que H1 cosigue el cerrojo de origen (cuentaA), H4 consigue el cerrojo de origen
-		    // tambien (en H4 empresa es origen y H1 destino). ahora cada uno intenta coger el de destino. H1 intenta destino.
-			// el destino es empresa, pero ya esta cogido, lo tiene H1. no puede, entonces espera a que se libere. H4 más de lo mismo, intenta
-			//coger destino, que es CuentaA, y no puede. Las dos se quedan esperando, indefinidamente. no hay situacion que lo
-			// resuelva. esto se conoce como deadlock. Las dos esperan un recurso que no llega.
+		
+		//Tratando de solucionar deadlock que produce synchronized (destino)
+		Cuenta primera;
+		Cuenta segunda;
+		
+		//Establecemos un orden, un consenso. primero va una transferencia, luego otra
+		if (origen.id < destino.id) {
+			primera = origen;
+			segunda = destino;
+		} else {
+			primera = destino;
+			segunda = origen;
 		}
+		
+		synchronized(primera) {
+			synchronized(segundo){ //soluciona el problema de que H1 y H2 se esperen entre sí, porque si tienen el mismo destino (misma referencia)				
+		}
+		//ahora en segundo (synchronized(segundo)) no hay nadie luchando por el cerrojo, solo uno, (segun el orden que hemos establecido), asi que
+		//se soluciona el deadlock.
+		//al entrar en synchronized (primera) hay una lucha de tranferencias entre H1 y H2, luego al luchar por el segundo no hay lucha, solo va el 
+		// el que consiguió el de primero. en este caso hemos establecido que el primero va a ser el de H1 porque su origen.id (cuenta A) es más pequeño
+		//que su destino (empresa), coge valor de primera.
+		//en H1->H4: primera = origen (Cuenta A). segunda = destino (empresa)
+		//en H4->H1: primera = destino (Cuenta A). seguunda  origen (empresa).
+		
 		if (origen.saldo >= cantidad) {
 			origen.saldo -= cantidad;
 			destino.saldo += cantidad;
